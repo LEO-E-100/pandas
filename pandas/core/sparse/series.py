@@ -112,6 +112,10 @@ class SparseSeries(Series):
                  fill_value=None, name=None, dtype=None, copy=False,
                  fastpath=False):
 
+        if index is None:
+            index = com._default_index(sparse_index.length)
+        index = _ensure_index(index)
+
         # we are called internally, so short-circuit
         if fastpath:
 
@@ -190,10 +194,6 @@ class SparseSeries(Series):
                     v = data
                     data = np.empty(length)
                     data.fill(v)
-
-            if index is None:
-                index = com._default_index(sparse_index.length)
-            index = _ensure_index(index)
 
             # create/copy the manager
             if isinstance(data, SingleBlockManager):
